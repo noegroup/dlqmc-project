@@ -2,7 +2,7 @@
 category = "main"
 description = "Abseil Python Common Libraries, see https://github.com/abseil/abseil-py."
 name = "absl-py"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.8.1"
 
@@ -30,7 +30,7 @@ version = "0.1.0"
 category = "main"
 description = "Atomic file writes."
 name = "atomicwrites"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.3.0"
 
@@ -129,6 +129,33 @@ python-versions = "*"
 version = "0.5.0"
 
 [[package]]
+category = "main"
+description = ""
+name = "dlqmc"
+optional = false
+python-versions = "^3.7"
+version = "0.1.0"
+
+[package.dependencies]
+certifi = "*"
+click = "^7.0"
+importlib-metadata = "^0.23.0"
+numpy = "^1.16"
+pandas = "^0.24.2"
+pyscf = "^1.6"
+pytest = "^4.4"
+scipy = "^1.2"
+tensorboard = "^2.0"
+toml = "^0.10.0"
+torch = "^1.1"
+tqdm = "^4.31"
+
+[package.source]
+reference = ""
+type = "directory"
+url = "extern/dlqmc"
+
+[[package]]
 category = "dev"
 description = "Discover and load entry points from installed packages."
 name = "entrypoints"
@@ -207,7 +234,7 @@ version = "0.17.1"
 category = "main"
 description = "HTTP/2-based RPC framework"
 name = "grpcio"
-optional = true
+optional = false
 python-versions = "*"
 version = "1.24.1"
 
@@ -230,7 +257,7 @@ six = "*"
 category = "main"
 description = "Read metadata from Python packages"
 name = "importlib-metadata"
-optional = true
+optional = false
 python-versions = ">=2.7,!=3.0,!=3.1,!=3.2,!=3.3"
 version = "0.23"
 
@@ -383,7 +410,7 @@ setuptools = "*"
 category = "main"
 description = "Python implementation of Markdown."
 name = "markdown"
-optional = true
+optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
 version = "3.1.1"
 
@@ -433,7 +460,7 @@ version = "0.8.4"
 category = "main"
 description = "More routines for operating on iterables, beyond itertools"
 name = "more-itertools"
-optional = true
+optional = false
 python-versions = ">=3.4"
 version = "7.0.0"
 
@@ -586,7 +613,7 @@ version = "5.4.1"
 category = "main"
 description = "plugin and hook calling mechanisms for python"
 name = "pluggy"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.9.0"
 
@@ -614,7 +641,7 @@ wcwidth = "*"
 category = "main"
 description = "Protocol Buffers"
 name = "protobuf"
-optional = true
+optional = false
 python-versions = "*"
 version = "3.7.0"
 
@@ -635,7 +662,7 @@ version = "0.6.0"
 category = "main"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
 name = "py"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "1.8.0"
 
@@ -712,7 +739,7 @@ six = "*"
 category = "main"
 description = "pytest: simple powerful testing with Python"
 name = "pytest"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "4.4.0"
 
@@ -796,7 +823,7 @@ version = "1.12.0"
 category = "main"
 description = "TensorBoard lets you watch Tensors Flow"
 name = "tensorboard"
-optional = true
+optional = false
 python-versions = ">= 2.7, != 3.0.*, != 3.1.*"
 version = "2.0.0"
 
@@ -867,7 +894,7 @@ version = "5.1.1"
 category = "main"
 description = "Fast, Extensible Progress Meter"
 name = "tqdm"
-optional = true
+optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 version = "4.31.1"
 
@@ -904,7 +931,7 @@ version = "0.5.1"
 category = "main"
 description = "The comprehensive WSGI web application library."
 name = "werkzeug"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.16.0"
 
@@ -913,7 +940,7 @@ category = "main"
 description = "A built-package format for Python."
 marker = "python_version >= \"3\""
 name = "wheel"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.33.6"
 
@@ -932,19 +959,15 @@ notebook = ">=4.4.1"
 category = "main"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 name = "zipp"
-optional = true
+optional = false
 python-versions = ">=2.7"
 version = "0.6.0"
 
 [package.dependencies]
 more-itertools = "*"
 
-[extras]
-test = ["pytest"]
-train = ["tensorboard", "tqdm", "click", "importlib-metadata"]
-
 [metadata]
-content-hash = "39ab89f39bf57af64630e9a85ffbef4a89d07bf595979046da0a1282e97fdacf"
+content-hash = "e5d9ac8fa7771f8f01b707f898f0f685a154ebf6bed90d070a7fbd647304266e"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -962,6 +985,7 @@ colorama = ["05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d", 
 cycler = ["1d8a5ae1ff6c5cf9b93e8811e581232ad8920aeec647c37316ceac982b08cb2d", "cd7b2d1018258d7247a71425e9f26463dfb444d411c39569972f4ce586b0c9d8"]
 decorator = ["33cd704aea07b4c28b3eb2c97d288a06918275dac0ecebdaf1bc8a48d98adb9e", "cabb249f4710888a2fc0e13e9a16c343d932033718ff62e1e9bc93a9d3a9122b"]
 defusedxml = ["24d7f2f94f7f3cb6061acb215685e5125fbcdc40a857eff9de22518820b0a4f4", "702a91ade2968a82beb0db1e0766a6a273f33d4616a6ce8cde475d8e09853b20"]
+dlqmc = []
 entrypoints = ["589f874b313739ad35be6e0cd7efde2a4e9b6fea91edcc34e58ecbb8dbe56d19", "c70dd71abe5a8c85e55e12c19bd91ccfeec11a6e99044204511f9ed547d48451"]
 flake8 = ["19241c1cbc971b9962473e4438a2ca19749a7dd002dd1a946eaba171b4114548", "8e9dfa3cecb2400b3738a42c54c3043e821682b9c840b0448c0503f781130696"]
 flake8-bugbear = ["07b6e769d7f4e168d590f7088eae40f6ddd9fa4952bed31602def65842682c83", "0ccf56975f4db1d69dc1cf3598c99d768ebf95d0cad27d76087954aa399b515a"]
