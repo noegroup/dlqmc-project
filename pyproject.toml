@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "dlqmc_proj"
+name = "dlqmc"
 version = "0.1.0"
 description = "Deep-learning quantum Monte Carlo project"
 authors = [
@@ -10,7 +10,7 @@ packages = []
 
 [tool.poetry.dependencies]
 python = "^3.7"
-dlqmc = { path = "extern/dlqmc", develop = true, extras = ['test', 'train'] }
+deepqmc = { path = "extern/deepqmc", develop = true, extras = ['test', 'train'] }
 
 [tool.poetry.dev-dependencies]
 ipykernel = "^5.1"

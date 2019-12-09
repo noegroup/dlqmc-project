@@ -3,7 +3,7 @@ from pathlib import Path
 
 import click
 
-from dlqmc.utils import NestedDict
+from deepqmc.utils import NestedDict
 from prepare_runs import prepare_run
 
 systems = [

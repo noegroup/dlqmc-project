@@ -7,11 +7,11 @@ import click
 import importlib_metadata
 import toml
 
-from dlqmc.utils import NestedDict
+from deepqmc.utils import NestedDict
 
 INIT_FILE = 'init.sh'
 PARAM_FILE = 'params.toml'
-PACKAGE_NAME = 'dlqmc'
+PACKAGE_NAME = 'deepqmc'
 PACKAGE_FILE = f'{PACKAGE_NAME}.tar.gz'
 PACKAGE_FILE_VER = f'{PACKAGE_NAME}-{importlib_metadata.version(PACKAGE_NAME)}.tar.gz'
 SCRIPT_DIR = Path(__file__).resolve().parent

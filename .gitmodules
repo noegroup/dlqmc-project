@@ -7,6 +7,6 @@
 [submodule "extern/torch-kfac"]
 	path = extern/torch-kfac
 	url = git@github.com:noegroup/torch-kfac.git
-[submodule "extern/dlqmc"]
-	path = extern/dlqmc
-	url = git@github.com:noegroup/dlqmc.git
+[submodule "extern/deepqmc"]
+	path = extern/deepqmc
+	url = git@github.com:noegroup/deepqmc.git
