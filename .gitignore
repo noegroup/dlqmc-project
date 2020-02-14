@@ -3,7 +3,8 @@
 /src/*.egg-info/
 /notebooks/.ipynb_checkpoints/
 /notebooks/tmp*
-/notebooks/runs/
+/notebooks/runs
 /runs
 /dist/
-/init.sh
+/bundle/
+/local.mk
