@@ -1,17 +1,29 @@
 from pathlib import Path
 
 import click
+import tomlkit
 import torch
 
 from deepqmc import evaluate, train
+from deepqmc.wf import PauliNet
 
 from . import wf_from_file
+from .defaults import DEEPQMC_MAPPING, collect_kwarg_defaults
 from .experiments import all_systems, sampling
 
 
 @click.group()
 def cli():
     pass
+
+
+@cli.command()
+def defaults():
+    table = tomlkit.table()
+    table['model_kwargs'] = collect_kwarg_defaults(PauliNet.from_hf, DEEPQMC_MAPPING)
+    table['train_kwargs'] = collect_kwarg_defaults(train, DEEPQMC_MAPPING)
+    table['evaluate_kwargs'] = collect_kwarg_defaults(evaluate, DEEPQMC_MAPPING)
+    click.echo(tomlkit.dumps(table), nl=False)
 
 
 @cli.group()

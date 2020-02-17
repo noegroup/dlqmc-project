@@ -35,9 +35,9 @@ def all_systems(ctx):
         params = NestedDict()
         params['system'] = system
         if 'MD' in param_set:
-            params['pauli_kwargs.cas'] = cass[sys_name]
+            params['model_kwargs.cas'] = cass[sys_name]
         if 'BF' not in param_set:
-            params['pauli_kwargs.omni_kwargs.with_backflow'] = False
+            params['model_kwargs.omni_kwargs.with_backflow'] = False
         path.mkdir(parents=True)
         (path / 'param.toml').write_text(toml.dumps(params, encoder=toml.TomlEncoder()))
 

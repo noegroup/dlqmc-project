@@ -19,6 +19,7 @@ python = "^3.7"
 deepqmc = { path = "extern/deepqmc", develop = true, extras = ['all'] }
 click = "^7.0"
 pandas = "^1.0.1"
+tomlkit = "^0.5.8"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.5"

@@ -12,7 +12,7 @@ def wf_from_file(path, state=None):
     if isinstance(system, str):
         system = {'name': system}
     mol = Molecule.from_name(**system)
-    wf = PauliNet.from_hf(mol, **params.pop('pauli_kwargs', {}))
+    wf = PauliNet.from_hf(mol, **params.pop('model_kwargs', {}))
     if state:
         wf.load_state_dict(state['wf'])
     return wf, params

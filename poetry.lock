@@ -20,7 +20,7 @@ version = "1.4.3"
 [[package]]
 category = "dev"
 description = "Disable App Nap on OS X 10.9"
-marker = "python_version >= \"3.3\" and sys_platform == \"darwin\" or platform_system == \"Darwin\""
+marker = "sys_platform == \"darwin\" or platform_system == \"Darwin\" or python_version >= \"3.3\" and sys_platform == \"darwin\""
 name = "appnope"
 optional = false
 python-versions = "*"
@@ -51,7 +51,6 @@ tests = ["coverage", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.i
 [[package]]
 category = "dev"
 description = "Specifications for callback functions passed in to an API"
-marker = "python_version >= \"3.3\""
 name = "backcall"
 optional = false
 python-versions = "*"
@@ -124,7 +123,7 @@ version = "7.0"
 [[package]]
 category = "main"
 description = "Cross-platform colored terminal text."
-marker = "sys_platform == \"win32\" and python_version != \"3.4\" or python_version >= \"3.3\" and sys_platform == \"win32\""
+marker = "sys_platform == \"win32\" and python_version != \"3.4\" or sys_platform == \"win32\" or python_version >= \"3.3\" and sys_platform == \"win32\""
 name = "colorama"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -171,38 +170,6 @@ numpy = "^1.16"
 toml = "^0.10.0"
 torch = "^1.1"
 uncertainties = "^3.1.2"
-
-[package.dependencies.Pillow]
-optional = true
-version = "^5.4"
-
-[package.dependencies.coverage]
-optional = true
-version = "^4.5"
-
-[package.dependencies.h5py]
-optional = true
-version = "^2.10.0"
-
-[package.dependencies.pyscf]
-optional = true
-version = "^1.6"
-
-[package.dependencies.pytest]
-optional = true
-version = "^4.4"
-
-[package.dependencies.scipy]
-optional = true
-version = "^1.2"
-
-[package.dependencies.tensorboard]
-optional = true
-version = "^2.0"
-
-[package.dependencies.tqdm]
-optional = true
-version = "^4.31"
 
 [package.extras]
 all = ["scipy (^1.2)", "pyscf (^1.6)", "pytest (^4.4)", "coverage (^4.5)", "tensorboard (^2.0)", "tqdm (^4.31)", "h5py (^2.10.0)", "Pillow (^5.4)"]
@@ -476,7 +443,6 @@ xdg_home = ["appdirs (>=1.4.0)"]
 [[package]]
 category = "dev"
 description = "An autocompletion tool for Python that can be used for text editors."
-marker = "python_version >= \"3.3\""
 name = "jedi"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -802,7 +768,7 @@ flake8-polyfill = ">=1.0.2,<2"
 [[package]]
 category = "dev"
 description = "Pexpect allows easy control of interactive console applications."
-marker = "python_version >= \"3.3\" and sys_platform != \"win32\""
+marker = "python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\""
 name = "pexpect"
 optional = false
 python-versions = "*"
@@ -814,7 +780,6 @@ ptyprocess = ">=0.5"
 [[package]]
 category = "dev"
 description = "Tiny 'shelve'-like database with concurrency support"
-marker = "python_version >= \"3.3\""
 name = "pickleshare"
 optional = false
 python-versions = "*"
@@ -858,7 +823,6 @@ twisted = ["twisted"]
 [[package]]
 category = "dev"
 description = "Library for building powerful interactive command lines in Python"
-marker = "python_version >= \"3.3\""
 name = "prompt-toolkit"
 optional = false
 python-versions = ">=3.6"
@@ -1199,6 +1163,14 @@ version = "0.10.0"
 
 [[package]]
 category = "main"
+description = "Style preserving TOML library"
+name = "tomlkit"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "0.5.8"
+
+[[package]]
+category = "main"
 description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
 name = "torch"
 optional = false
@@ -1340,7 +1312,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "24c9bb8f707507e1cadb89d37722691f145923394fc048d4d7db7659d6de5f7f"
+content-hash = "fcaacbc5ec82496289f050d1392e1ca05b02a8026b10ba779858c2e2ce81ef93"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -2094,6 +2066,10 @@ toml = [
     {file = "toml-0.10.0-py2.7.egg", hash = "sha256:f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"},
     {file = "toml-0.10.0-py2.py3-none-any.whl", hash = "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"},
     {file = "toml-0.10.0.tar.gz", hash = "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c"},
+]
+tomlkit = [
+    {file = "tomlkit-0.5.8-py2.py3-none-any.whl", hash = "sha256:96e6369288571799a3052c1ef93b9de440e1ab751aa045f435b55e9d3bcd0690"},
+    {file = "tomlkit-0.5.8.tar.gz", hash = "sha256:32c10cc16ded7e4101c79f269910658cc2a0be5913f1252121c3cd603051c269"},
 ]
 torch = [
     {file = "torch-1.4.0-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:271d4d1e44df6ed57c530f8849b028447c62b8a19b8e8740dd9baa56e7f682c1"},
