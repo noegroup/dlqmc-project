@@ -172,6 +172,10 @@ toml = "^0.10.0"
 torch = "^1.1"
 uncertainties = "^3.1.2"
 
+[package.dependencies.Pillow]
+optional = true
+version = "^5.4"
+
 [package.dependencies.coverage]
 optional = true
 version = "^4.5"
@@ -201,10 +205,10 @@ optional = true
 version = "^4.31"
 
 [package.extras]
-all = ["scipy (^1.2)", "pyscf (^1.6)", "pytest (^4.4)", "coverage (^4.5)", "tensorboard (^2.0)", "tqdm (^4.31)", "h5py (^2.10.0)"]
+all = ["scipy (^1.2)", "pyscf (^1.6)", "pytest (^4.4)", "coverage (^4.5)", "tensorboard (^2.0)", "tqdm (^4.31)", "h5py (^2.10.0)", "Pillow (^5.4)"]
 doc = ["sphinx (^2.2)", "sphinxcontrib-katex (^0.5.1)"]
 test = ["pytest (^4.4)", "coverage (^4.5)"]
-train = ["tensorboard (^2.0)", "tqdm (^4.31)", "h5py (^2.10.0)"]
+train = ["tensorboard (^2.0)", "tqdm (^4.31)", "h5py (^2.10.0)", "Pillow (^5.4)"]
 wf = ["scipy (^1.2)", "pyscf (^1.6)"]
 
 [package.source]
@@ -813,7 +817,7 @@ python-versions = "*"
 version = "0.7.5"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python Imaging Library (Fork)"
 name = "pillow"
 optional = false
@@ -1332,7 +1336,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "0cf1fb21cf6f98371be2898693daf4096cd5ca4dd30f3f51c0b16da1659ba804"
+content-hash = "7129853ef82d86721638d6fffe187dd0c130a2da1debf2c0673c127ce73dcba5"
 python-versions = "^3.7"
 
 [metadata.files]
