@@ -18,7 +18,7 @@ go:
 	ssh -t $(REMOTE) 'cd $(REMOTE_PATH) && exec $$SHELL'
 
 update: bundle
-	$(RSYNC_CMD) Makefile bundle extern/deepqmc/tests $(REMOTE):./
+	$(RSYNC_CMD) Makefile bundle extern/deepqmc/tests data $(REMOTE):./
 	@ssh $(REMOTE) 'make -C $(REMOTE_PATH) deploy'
 
 bundle:
