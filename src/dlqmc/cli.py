@@ -19,7 +19,7 @@ def cli():
 @click.pass_context
 def prepare(ctx, path):
     ctx.ensure_object(dict)
-    ctx.obj['base'] = Path(path)
+    ctx.obj['basedir'] = Path(path)
 
 
 for cmd in [all_systems, sampling]:

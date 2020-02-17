@@ -3,7 +3,11 @@ from itertools import product
 from pathlib import Path
 
 import click
+import h5py
+import numpy as np
+import pandas as pd
 import toml
+from uncertainties import ufloat
 
 from deepqmc.utils import NestedDict
 
@@ -25,7 +29,7 @@ def all_systems(ctx):
         sys_label = sys_name
         if sys_name == 'Hn':
             sys_label += f'-{system["dist"]}'
-        path = ctx.obj['base'] / sys_label / param_set
+        path = ctx.obj['basedir'] / sys_label / param_set
         if path.exists():
             continue
         params = NestedDict()
@@ -36,6 +40,21 @@ def all_systems(ctx):
             params['pauli_kwargs.omni_kwargs.with_backflow'] = False
         path.mkdir(parents=True)
         (path / 'param.toml').write_text(toml.dumps(params, encoder=toml.TomlEncoder()))
+
+
+def collect_all_systems(basedir):
+    results = []
+    for param_path in Path(basedir).glob('**/sampling.toml'):
+        path = param_path.parent
+        with h5py.File(path / 'blocks.h5', 'r') as f:
+            if 'energy' not in f:
+                continue
+            ene = f['energy/value'][...]
+            ene = ufloat(ene.mean(), ene.mean(0).std() / np.sqrt(ene.shape[-1]))
+            system, ansatz = str(path).split('/')[-2:]
+            results.append({'system': system, 'ansatz': ansatz, 'energy': ene})
+    results = pd.DataFrame(results).set_index(['system', 'ansatz'])
+    return results
 
 
 @click.command()
@@ -51,7 +70,7 @@ def sampling(ctx, training):
         if not chkpts:
             continue
         step = max(chkpts)
-        path = ctx.obj['base'] / label
+        path = ctx.obj['basedir'] / label
         params = toml.loads(train_path / 'param.toml')
         train_path = Path(os.path.relpath(train_path.resolve(), path.resolve()))
         path.mkdir(parents=True)
