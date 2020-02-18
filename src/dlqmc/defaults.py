@@ -59,12 +59,8 @@ def collect_kwarg_defaults(func, mapping):
             if p.default is None:
                 kwargs.add(tomlkit.comment(f'{p.name} = ...'))
             else:
-                if isinstance(p.default, tuple):
-                    default = list(p.default)
-                else:
-                    default = p.default
                 try:
-                    kwargs[p.name] = default
+                    kwargs[p.name] = p.default
                 except ValueError:
                     print(func, p.name, p.kind, p.default)
                     raise
