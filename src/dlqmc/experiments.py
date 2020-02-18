@@ -44,14 +44,13 @@ def all_systems(ctx):
 
 def collect_all_systems(basedir):
     results = []
-    for param_path in Path(basedir).glob('**/sampling.toml'):
-        path = param_path.parent
-        with h5py.File(path / 'blocks.h5', 'r') as f:
+    for path in Path(basedir).glob('**/blocks.h5'):
+        with h5py.File(path, 'r') as f:
             if 'energy' not in f:
                 continue
             ene = f['energy/value'][...]
             ene = ufloat(ene.mean(), ene.mean(0).std() / np.sqrt(ene.shape[-1]))
-            system, ansatz = str(path).split('/')[-2:]
+            system, ansatz = str(path).split('/')[-3:-1]
             results.append({'system': system, 'ansatz': ansatz, 'energy': ene})
     results = pd.DataFrame(results).set_index(['system', 'ansatz'])
     return results
