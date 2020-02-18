@@ -57,6 +57,30 @@ def collect_all_systems(basedir):
 
 
 @click.command()
+@click.pass_context
+def hyperparam_scan_co2(ctx):
+    learning_rates = [0.3e-3, 1e-3, 3e-3]
+    batch_sizes = [1000, 2000, 4000]
+    epoch_sizes = [3, 5, 8]
+    ns_decorrelate = [5, 10, 20]
+    payload = product(learning_rates, batch_sizes, epoch_sizes, ns_decorrelate)
+    for lr, bs, es, n_decorr in payload:
+        label = f'lr-{lr}_bs-{bs}_es-{es}_decorr-{n_decorr}'
+        path = ctx.obj['basedir'] / label
+        if path.exists():
+            continue
+        params = NestedDict()
+        params['system'] = 'CO2'
+        params['train_kwargs.n_steps'] = 2000
+        params['train_kwargs.learning_rate'] = lr
+        params['train_kwargs.batch_size'] = bs
+        params['train_kwargs.epoch_size'] = es
+        params['train_kwargs.sampler_kwargs.n_decorrelate'] = n_decorr
+        path.mkdir(parents=True)
+        (path / 'param.toml').write_text(toml.dumps(params, encoder=toml.TomlEncoder()))
+
+
+@click.command()
 @click.argument('training', type=click.Path(exists=True))
 @click.pass_context
 def sampling(ctx, training):
