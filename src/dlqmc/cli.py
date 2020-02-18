@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 import click
@@ -13,7 +14,8 @@ from .defaults import DEEPQMC_MAPPING, collect_kwarg_defaults
 
 @click.group()
 def cli():
-    pass
+    logging.basicConfig(style='{', format='{message}', datefmt='%H:%M:%S')
+    logging.getLogger('deepqmc').setLevel(logging.DEBUG)
 
 
 @cli.command()
