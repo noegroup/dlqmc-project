@@ -7,9 +7,8 @@ import torch
 from deepqmc import evaluate, train
 from deepqmc.wf import PauliNet
 
-from . import wf_from_file
+from . import experiments, wf_from_file
 from .defaults import DEEPQMC_MAPPING, collect_kwarg_defaults
-from .experiments import all_systems, sampling
 
 
 @click.group()
@@ -34,8 +33,10 @@ def prepare(ctx, path):
     ctx.obj['basedir'] = Path(path)
 
 
-for cmd in [all_systems, sampling]:
-    prepare.add_command(cmd)
+for attr in dir(experiments):
+    obj = getattr(experiments, attr)
+    if isinstance(obj, click.core.Command):
+        prepare.add_command(obj)
 
 
 @cli.command('train')
