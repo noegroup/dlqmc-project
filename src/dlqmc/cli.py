@@ -7,10 +7,13 @@ import torch
 from torch.utils.tensorboard import SummaryWriter
 
 from deepqmc import evaluate, train
+from deepqmc.errors import TrainingBlowup
 from deepqmc.wf import PauliNet
 
 from . import experiments, wf_from_file
 from .defaults import DEEPQMC_MAPPING, collect_kwarg_defaults
+
+log = logging.getLogger(__name__)
 
 
 @click.group()
@@ -64,20 +67,40 @@ for attr in dir(experiments):
 @click.argument('workdir', type=click.Path(exists=True))
 @click.option('--save-every', default=100, show_default=True)
 @click.option('--cuda/--no-cuda', default=True)
-def train_at(workdir, save_every, cuda):
+@click.option('--max-restarts', default=3, show_default=True)
+@click.option('--min-rewind', default=30, show_default=True)
+def train_at(workdir, save_every, cuda, max_restarts, min_rewind):
     workdir = Path(workdir).resolve()
     state_file = workdir / 'state.pt'
-    state = torch.load(state_file) if state_file.is_file() else None
-    wf, params = wf_from_file(workdir / 'param.toml', state)
-    if cuda:
-        wf.cuda()
-    train(
-        wf,
-        workdir=workdir,
-        state=state,
-        save_every=save_every,
-        **params.get('train_kwargs', {}),
-    )
+    if not state_file.is_file():
+        state_file = None
+    for attempt in range(max_restarts + 1):
+        state = torch.load(state_file) if state_file else None
+        wf, params = wf_from_file(workdir / 'param.toml', state)
+        if cuda:
+            wf.cuda()
+        try:
+            train(
+                wf,
+                workdir=workdir,
+                state=state,
+                save_every=save_every,
+                **params.get('train_kwargs', {}),
+            )
+        except TrainingBlowup as e:
+            if attempt == max_restarts:
+                log.error(f'Detected blowup, maximum number of restarts reached')
+                break
+            for step, sf in reversed(e.chkpts):
+                if step >= e.step - min_rewind:
+                    continue
+                state_file = sf
+                log.warning(f'Detected blowup, restarting from step {step + 1}')
+                break
+            else:
+                log.warning(f'Detected blowup, restarting from beginnig')
+        else:
+            break
 
 
 @cli.command('evaluate')
