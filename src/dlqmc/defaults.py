@@ -15,12 +15,12 @@ DEEPQMC_MAPPING = {
     (LangevinSampler.from_mf, 'kwargs'): LangevinSampler,
     (evaluate, 'sampler_kwargs'): (
         LangevinSampler.from_mf,
-        ['n_decorrelate', 'n_discard', 'sample_size'],
+        [('n_decorrelate', 4), 'n_discard', 'sample_size'],
     ),
     (evaluate, 'sample_kwargs'): sample_wf,
     (PauliNet.from_hf, 'pauli_kwargs'): (
         PauliNet.from_pyscf,
-        ['cusp_correction', 'cusp_electrons'],
+        [('cusp_correction', True), ('cusp_electrons', True)],
     ),
     (PauliNet.from_hf, 'omni_kwargs'): OmniSchNet,
     (PauliNet.from_pyscf, 'kwargs'): PauliNet,
@@ -33,8 +33,12 @@ def _get_subkwargs(func, name, mapping):
     target = mapping[func, name]
     target, override = target if isinstance(target, tuple) else (target, [])
     sub_kwargs = collect_kwarg_defaults(target, mapping)
-    for k in override:
-        del sub_kwargs[k]
+    for x in override:
+        if isinstance(x, tuple):
+            key, val = x
+            sub_kwargs[key] = val
+        else:
+            del sub_kwargs[x]
     return sub_kwargs
 
 
@@ -60,7 +64,10 @@ def collect_kwarg_defaults(func, mapping):
                 kwargs.add(tomlkit.comment(f'{p.name} = ...'))
             else:
                 try:
-                    kwargs[p.name] = p.default
+                    default = p.default
+                    if isinstance(default, tuple):
+                        default = list(default)
+                    kwargs[p.name] = default
                 except ValueError:
                     print(func, p.name, p.kind, p.default)
                     raise

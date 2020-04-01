@@ -94,7 +94,7 @@ def sampling(ctx, training):
             continue
         step = max(chkpts)
         path = ctx.obj['basedir'] / label
-        params = toml.loads(train_path / 'param.toml')
+        params = toml.loads((train_path / 'param.toml').read_text())
         train_path = Path(os.path.relpath(train_path.resolve(), path.resolve()))
         path.mkdir(parents=True)
         (path / 'param.toml').write_text(toml.dumps(params, encoder=toml.TomlEncoder()))
