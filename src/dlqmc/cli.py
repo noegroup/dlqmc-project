@@ -4,6 +4,7 @@ from pathlib import Path
 import click
 import tomlkit
 import torch
+from torch.utils.tensorboard import SummaryWriter
 
 from deepqmc import evaluate, train
 from deepqmc.wf import PauliNet
@@ -25,6 +26,24 @@ def defaults():
     table['train_kwargs'] = collect_kwarg_defaults(train, DEEPQMC_MAPPING)
     table['evaluate_kwargs'] = collect_kwarg_defaults(evaluate, DEEPQMC_MAPPING)
     click.echo(tomlkit.dumps(table), nl=False)
+
+
+@cli.command()
+@click.argument('basedir', type=click.Path(exists=False))
+@click.argument('HF', type=float)
+@click.argument('exact', type=float)
+@click.option('--fractions', default='0,90,99,100', type=str)
+@click.option('--steps', '-n', default=2_000, type=int)
+def draw_hlines(basedir, hf, exact, fractions, steps):
+    basedir = Path(basedir)
+    fractions = [float(x) / 100 for x in fractions.split(',')]
+    for fraction in fractions:
+        value = hf + fraction * (exact - hf)
+        workdir = basedir / f'line-{value:.3f}'
+        with SummaryWriter(log_dir=workdir, flush_secs=15, purge_step=0) as writer:
+            for step in range(steps):
+                writer.add_scalar('E_loc_loss/mean', value, step)
+                writer.add_scalar('E_loc/mean', value, step)
 
 
 @cli.group()
