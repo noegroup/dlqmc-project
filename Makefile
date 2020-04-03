@@ -18,9 +18,6 @@ RSYNC_CMD = rsync \
 
 .PHONY: bundle
 
-test:
-	echo test
-
 all:
 
 go:
@@ -32,7 +29,7 @@ update: bundle
 
 bundle:
 	rm -rf bundle && mkdir bundle
-	poetry export -f requirements.txt | grep -v deepqmc >bundle/requirements.txt
+	poetry export -f requirements.txt --without-hashes | grep -v deepqmc >bundle/requirements.txt
 	cd extern/deepqmc && poetry build -f wheel
 	cp extern/deepqmc/dist/deepqmc-$(DEEPQMC_VERSION)-py3-none-any.whl bundle/
 	cd extern/torch-kfac && poetry build -f wheel

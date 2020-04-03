@@ -20,6 +20,7 @@ deepqmc = { path = "extern/deepqmc", develop = true, extras = ['all'] }
 click = "^7.0"
 pandas = "^1.0.1"
 tomlkit = "^0.5.8"
+pyscf = "<1.7"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.5"
@@ -34,6 +35,7 @@ matplotlib = "^3.0"
 ipywidgets = "^7.4"
 nbstripout = "^0.3.5"
 pysnooper = "^0.0.12"
+pycodestyle = { git = "https://github.com/PyCQA/pycodestyle.git" }
 
 [tool.poetry.scripts]
 dlqmc = "dlqmc.cli:cli"
