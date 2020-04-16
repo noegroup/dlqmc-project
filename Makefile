@@ -57,6 +57,9 @@ task_%: make/%.mk
 	cp $< $(RUN)/Makefile
 	$(MAKE) -C $(RUN) prepare SRCDIR=$(SRCDIR)
 
+prepare_%:
+	$(PYTHON) -m dlqmc prepare $(RUN) $* $(SRCDIR)/param.toml >RUNS
+
 fetch:
 	$(RSYNC_CMD) -K --relative $(REMOTE):$(RUNS) ./
 

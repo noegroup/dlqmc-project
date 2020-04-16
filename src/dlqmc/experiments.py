@@ -1,4 +1,5 @@
 import os
+from copy import deepcopy
 from itertools import product
 from pathlib import Path
 
@@ -99,3 +100,17 @@ def sampling(ctx, training):
         path.mkdir(parents=True)
         (path / 'param.toml').write_text(toml.dumps(params, encoder=toml.TomlEncoder()))
         (path / 'state.pt').symlink_to(train_path / f'chkpts/state-{step}.pt')
+
+
+@click.command()
+@click.argument('param')
+@click.pass_context
+def cyclobutadiene(ctx, param):
+    templ = toml.loads(Path(param).read_text())
+    for label in ['ground', 'transition']:
+        path = ctx.obj['basedir'] / label
+        print(path)
+        param = deepcopy(templ)
+        param['system'] = f'dlqmc.systems:cyclobutadiene_{label}'
+        path.mkdir(parents=True)
+        (path / 'param.toml').write_text(toml.dumps(param))

@@ -21,6 +21,7 @@ click = "^7.0"
 pandas = "^1.0.1"
 tomlkit = "^0.5.8"
 pyscf = "<1.7"
+chemcoord = "^2.0.4"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.5"
@@ -35,7 +36,8 @@ matplotlib = "^3.0"
 ipywidgets = "^7.4"
 nbstripout = "^0.3.5"
 pysnooper = "^0.0.12"
-pycodestyle = { git = "https://github.com/PyCQA/pycodestyle.git" }
+pycodestyle = { git = "https://github.com/PyCQA/pycodestyle.git", rev = 'd219c68' }
+pyflakes = { git = "https://github.com/PyCQA/pyflakes.git", rev = '1911c20' }
 
 [tool.poetry.scripts]
 dlqmc = "dlqmc.cli:cli"
