@@ -1,4 +1,5 @@
 import os
+import shutil
 from copy import deepcopy
 from itertools import product
 from pathlib import Path
@@ -11,6 +12,29 @@ import toml
 from uncertainties import ufloat
 
 from deepqmc.utils import NestedDict
+
+
+@click.command()
+@click.argument('param')
+@click.pass_context
+def custom(ctx, param):
+    path = ctx.obj['basedir']
+    print(path)
+    path.mkdir(parents=True)
+    param = Path(param)
+    shutil.copy(param, path)
+    if toml.loads(param.read_text()).get('hooks'):
+        shutil.copy(param.parent / 'hooks.py', path)
+
+
+@click.command()
+@click.argument('script')
+@click.pass_context
+def script(ctx, script):
+    path = ctx.obj['basedir']
+    path.mkdir(parents=True)
+    shutil.copy(script, path)
+    print(path)
 
 
 @click.command()

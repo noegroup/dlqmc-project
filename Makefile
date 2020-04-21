@@ -3,7 +3,6 @@ KFAC_VERSION = 0.1.0
 DEEPQMC_VERSION = 0.1.0
 
 LOCAL_VENV = .venv
-SRCDIR = $(CURDIR)
 
 -include local.mk
 
@@ -24,7 +23,7 @@ go:
 	ssh -t $(REMOTE) 'cd $(REMOTE_PATH) && exec $$SHELL'
 
 update: bundle
-	$(RSYNC_CMD) --ignore-missing-args Makefile make bundle data states $(REMOTE):./
+	$(RSYNC_CMD) --ignore-missing-args Makefile bundle data states $(UPDATE_EXTRA) $(REMOTE):./
 	@ssh $(REMOTE) 'make -C $(REMOTE_PATH) deploy'
 
 bundle:
@@ -51,14 +50,6 @@ local_venv:
 
 deploy_local:
 	$(PYTHON) -m pip install --ignore-installed --no-deps bundle/*.whl
-
-task_%: make/%.mk
-	mkdir -p $(RUN)
-	cp $< $(RUN)/Makefile
-	$(MAKE) -C $(RUN) prepare SRCDIR=$(SRCDIR)
-
-prepare_%:
-	$(PYTHON) -m dlqmc prepare $(RUN) $* $(SRCDIR)/param.toml >RUNS
 
 fetch:
 	$(RSYNC_CMD) -K --relative $(REMOTE):$(RUNS) ./
