@@ -33,6 +33,7 @@ def all_systems(ctx):
         path = ctx.obj['basedir'] / sys_label / param_set
         if path.exists():
             continue
+        print(path)
         params = NestedDict()
         params['system'] = system
         if 'MD' in param_set:
@@ -70,6 +71,7 @@ def hyperparam_scan_co2(ctx):
         path = ctx.obj['basedir'] / label
         if path.exists():
             continue
+        print(path)
         params = NestedDict()
         params['system'] = 'CO2'
         params['train_kwargs.n_steps'] = 2000
@@ -95,6 +97,7 @@ def sampling(ctx, training):
             continue
         step = max(chkpts)
         path = ctx.obj['basedir'] / label
+        print(path)
         params = toml.loads((train_path / 'param.toml').read_text())
         train_path = Path(os.path.relpath(train_path.resolve(), path.resolve()))
         path.mkdir(parents=True)
