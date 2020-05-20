@@ -22,6 +22,7 @@ pandas = "^1.0.1"
 tomlkit = "^0.5.8"
 pyscf = "<1.7"
 chemcoord = "^2.0.4"
+torch = "<=1.4"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.5"
