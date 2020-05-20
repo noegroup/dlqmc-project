@@ -12,7 +12,7 @@ SHELL = /bin/bash  # need brace expansion
 
 TODAY := $(shell date +"%Y-%W/%Y-%m-%d")
 RSYNC_CMD = rsync \
-			-cirl --delete --rsync-path="cd $(REMOTE_PATH) && rsync" $(RSYNC_OPTS) \
+			-cirl --relative --delete --rsync-path="cd $(REMOTE_PATH) && rsync" $(RSYNC_OPTS) \
 			--exclude={venv/,OUTPUT,__pycache__/}
 
 .PHONY: bundle
@@ -23,7 +23,8 @@ go:
 	ssh -t $(REMOTE) 'cd $(REMOTE_PATH) && exec $$SHELL'
 
 update: bundle
-	$(RSYNC_CMD) --ignore-missing-args Makefile bundle data states $(UPDATE_EXTRA) $(REMOTE):./
+	$(RSYNC_CMD) --ignore-missing-args Makefile bundle data states notebooks/preamble*.py \
+		$(UPDATE_EXTRA) $(REMOTE):./
 	@ssh $(REMOTE) 'make -C $(REMOTE_PATH) deploy'
 
 bundle:
@@ -52,10 +53,10 @@ deploy_local:
 	$(PYTHON) -m pip install --ignore-installed --no-deps bundle/*.whl
 
 fetch:
-	$(RSYNC_CMD) -K --relative $(REMOTE):$(RUNS) ./
+	$(RSYNC_CMD) -K $(REMOTE):$(RUNS) ./
 
 push:
-	$(RSYNC_CMD) -K --relative $(RUNS) $(REMOTE):./
+	$(RSYNC_CMD) -K $(RUNS) $(REMOTE):./
 
 today:
 	mkdir -p runs/$(TODAY) runs/Current
