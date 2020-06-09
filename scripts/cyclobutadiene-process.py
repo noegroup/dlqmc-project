@@ -45,7 +45,7 @@ results = (
     .loc()[lambda x: x['step'] < 4500]
 )
 
-results.to_csv('data/processed/cyclobutadiene-fit.csv', index=False)
+results.to_csv('data/final/cyclobutadiene-fit.csv', index=False)
 
 results = defaultdict(list)
 for path in Path('data/raw/cyclobutadiene/sample').glob('*/*/*/*/sample.h5'):
@@ -67,4 +67,4 @@ results = (
     .reset_index()
 )
 
-results.to_csv('data/processed/cyclobutadiene-sample.csv', index=False)
+results.to_csv('data/final/cyclobutadiene-sample.csv', index=False)

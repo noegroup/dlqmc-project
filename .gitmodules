@@ -2,7 +2,7 @@
 	path = pub
 	url = git@github.com:noegroup/dl-qmc-pub.git
 [submodule "data/motta-hydrogen"]
-	path = data/motta-hydrogen
+	path = data/extern/motta-hydrogen
 	url = https://github.com/simonsfoundation/hydrogen-benchmark-PRX.git
 [submodule "extern/torch-kfac"]
 	path = extern/torch-kfac
