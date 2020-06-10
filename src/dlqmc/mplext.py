@@ -6,8 +6,10 @@ import numpy as np
 
 
 def corr_ene_tf(a):
-    with np.errstate(divide='ignore'):
-        return -np.log10(1 - a)
+    with np.errstate(divide='ignore', invalid='ignore'):
+        out = -np.log10(1 - a)
+        out = np.where(a >= 1, 10, out)
+        return out
 
 
 def corr_ene_inv_tf(a):
