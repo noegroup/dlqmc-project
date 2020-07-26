@@ -34,7 +34,6 @@ import deepqmc.torchext
 import dlqmc.systems
 from deepqmc import Molecule, evaluate, train
 from deepqmc.cli import wf_from_file
-from deepqmc.ewm import EWMElocMonitor
 from deepqmc.fit import (
     LossEnergy,
     fit_wf,
@@ -65,5 +64,12 @@ from deepqmc.wf import PauliNet
 from deepqmc.wf.paulinet import ElectronicSchNet, OmniSchNet, SubnetFactory
 from dlqmc.analysis import ewm_full, infinite_training_limit
 from dlqmc.experiments import collect_all_systems
-from dlqmc.plot import ewm, plot_training, plot_training_full
+from dlqmc.plot import ewm, plot_training
 from dlqmc.tools import short_fmt
+
+logging.basicConfig(
+    style='{',
+    format='[{asctime}.{msecs:03.0f}] {levelname}:{name}: {message}',
+    datefmt='%H:%M:%S',
+)
+logging.getLogger('deepqmc').setLevel(logging.DEBUG)

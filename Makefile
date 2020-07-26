@@ -23,7 +23,7 @@ go:
 	ssh -t $(REMOTE) 'cd $(REMOTE_PATH) && exec $$SHELL'
 
 update: bundle
-	$(RSYNC_CMD) --ignore-missing-args Makefile bundle data states notebooks/preamble*.py \
+	$(RSYNC_CMD) --ignore-missing-args Makefile bundle data/extern states notebooks/preamble*.py \
 		$(UPDATE_EXTRA) $(REMOTE):./
 	@ssh $(REMOTE) 'make -C $(REMOTE_PATH) deploy'
 

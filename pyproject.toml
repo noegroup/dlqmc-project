@@ -16,7 +16,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-deepqmc = { path = "extern/deepqmc", develop = true, extras = ['all'] }
+deepqmc = { path = "extern/deepqmc", develop = true, extras = ['all', 'doc'] }
 click = "^7.0"
 pandas = "^1.0.1"
 tomlkit = "^0.5.8"
