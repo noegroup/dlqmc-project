@@ -9,4 +9,4 @@
 	url = git@github.com:noegroup/torch-kfac.git
 [submodule "extern/deepqmc"]
 	path = extern/deepqmc
-	url = git@github.com:noegroup/deepqmc.git
+	url = git@github.com:deepqmc/deepqmc.git
