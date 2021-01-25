@@ -1,6 +1,5 @@
 import os
 import shutil
-from copy import deepcopy
 from itertools import product
 from pathlib import Path
 
@@ -154,14 +153,27 @@ def sampling_states(ctx, state, param):
 
 
 @click.command()
-@click.argument('param')
 @click.pass_context
-def cyclobutadiene(ctx, param):
-    templ = toml.loads(Path(param).read_text())
+def cyclobutadiene(ctx):
     for label in ['ground', 'transition']:
         path = ctx.obj['basedir'] / label
         print(path)
-        param = deepcopy(templ)
+        param = NestedDict()
         param['system'] = f'dlqmc.systems:cyclobutadiene_{label}'
+        param['model_kwargs.cas'] = [8, 4]
+        param['model_kwargs.pauli_kwargs.conf_cutoff'] = 1e-8
+        param['model_kwargs.pauli_kwargs.conf_limit'] = 10
+        param['model_kwargs.pauli_kwargs.rc_scaling'] = 3.0
+        param['model_kwargs.pauli_kwargs.cusp_alpha'] = 3.0
+        param['model_kwargs.pauli_kwargs.use_sloglindet'] = 'training'
+        param['model_kwargs.omni_kwargs.subnet_kwargs.n_layers_h'] = 2
+        param['train_kwargs.n_steps'] = 5_000
+        param['train_kwargs.batch_size'] = 1_000
+        param['train_kwargs.epoch_size'] = 5
+        param['train_kwargs.fit_kwargs.subbatch_size'] = 500
+        param['train_kwargs.sampler_kwargs.n_decorrelate'] = 20
+        param['train_kwargs.lr_scheduler_kwargs.CyclicLR.step_size_up'] = 375
         path.mkdir(parents=True)
-        (path / 'param.toml').write_text(toml.dumps(param))
+        (path / 'param.toml').write_text(toml.dumps(param, encoder=toml.TomlEncoder()))
+
+
