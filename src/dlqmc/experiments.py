@@ -130,6 +130,30 @@ def sampling(ctx, training):
 
 
 @click.command()
+@click.argument('state', type=click.Path(exists=True), nargs=-1)
+@click.option('--param')
+@click.pass_context
+def sampling_states(ctx, state, param):
+    base = os.path.commonpath(state)
+    if param:
+        param = toml.loads(Path(param).read_text())
+    for state_path in sorted(state):
+        label = os.path.splitext(os.path.relpath(state_path, base))[0]
+        train_path = Path(state_path).parents[1]
+        params = NestedDict()
+        path = ctx.obj['basedir'] / label
+        print(path)
+        params_train = toml.loads((train_path / 'param.toml').read_text())
+        params.update(params_train)
+        if param:
+            params.update(param)
+        path.mkdir(parents=True)
+        (path / 'param.toml').write_text(toml.dumps(params, encoder=toml.TomlEncoder()))
+        state_path = Path(os.path.relpath(Path(state_path).resolve(), path.resolve()))
+        (path / 'state.pt').symlink_to(state_path)
+
+
+@click.command()
 @click.argument('param')
 @click.pass_context
 def cyclobutadiene(ctx, param):
