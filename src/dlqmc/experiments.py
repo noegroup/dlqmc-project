@@ -1,6 +1,6 @@
 import os
 import shutil
-from itertools import product
+from itertools import chain, product
 from pathlib import Path
 
 import click
@@ -177,3 +177,58 @@ def cyclobutadiene(ctx):
         (path / 'param.toml').write_text(toml.dumps(param, encoder=toml.TomlEncoder()))
 
 
+@click.command()
+@click.pass_context
+def boron(ctx):
+    payload = chain(
+        product(
+            ['never', 'training', 'always'],
+            [(None, 1), ([4, 3], 3), ([8, 3], 16), ([8, 3], 100)],
+            [100, 10],
+            [(None, {})],
+        ),
+        product(
+            ['training'],
+            [(None, 1), ([8, 3], 16)],
+            [100, 10],
+            [('lrx2', {'train_kwargs.lr_scheduler_kwargs.CyclicLR.max_lr': 0.02})],
+        ),
+        product(
+            ['training'],
+            [(None, 1), ([8, 3], 16)],
+            [100, 10],
+            [('lrx3', {'train_kwargs.lr_scheduler_kwargs.CyclicLR.max_lr': 0.03})],
+        ),
+        product(
+            ['training'],
+            [(None, 1), ([8, 3], 16)],
+            [100, 10],
+            [('qx2', {'train_kwargs.fit_kwargs.q': 10})],
+        ),
+    )
+    for use_slgld, (cas, conf_lim), epoch_size, (extra_lbl, extra) in payload:
+        label = f'{use_slgld}_ndet-{conf_lim}_epoch-{epoch_size}'
+        if extra:
+            label += f'_{extra_lbl}'
+        path = ctx.obj['basedir'] / label
+        if path.exists():
+            continue
+        print(path)
+        param = NestedDict()
+        param['system'] = 'B'
+        param['train_kwargs.n_steps'] = 10_000
+        param['train_kwargs.batch_size'] = 10_000
+        param['train_kwargs.fit_kwargs.subbatch_size'] = 5_000
+        param['train_kwargs.sampler_kwargs.n_discard'] = 10
+        param['model_kwargs.pauli_kwargs.conf_cutoff'] = 1e-8
+        param['model_kwargs.pauli_kwargs.rc_scaling'] = 3.0
+        param['model_kwargs.pauli_kwargs.cusp_alpha'] = 3.0
+        param['model_kwargs.omni_kwargs.subnet_kwargs.n_layers_h'] = 2
+        param['model_kwargs.pauli_kwargs.conf_limit'] = conf_lim
+        param['model_kwargs.pauli_kwargs.use_sloglindet'] = use_slgld
+        param['model_kwargs.cas'] = cas
+        param['train_kwargs.epoch_size'] = epoch_size
+        for k, v in extra.items():
+            param[k] = v
+        path.mkdir(parents=True)
+        (path / 'param.toml').write_text(toml.dumps(param, encoder=toml.TomlEncoder()))
